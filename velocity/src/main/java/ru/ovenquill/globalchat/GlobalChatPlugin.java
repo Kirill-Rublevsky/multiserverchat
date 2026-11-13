@@ -11,7 +11,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 import java.nio.file.Path;
 
-@Plugin(id="ovenquill-globalchat", name="OVENQUILL GlobalChat", version="1.0.1", authors={"OVENQUILL"})
+@Plugin(id="ovenquill-globalchat", name="OVENQUILL GlobalChat", version="1.0.2", authors={"OVENQUILL"})
 public final class GlobalChatPlugin {
     private final ProxyServer proxy; private final Logger logger; private final ConfigManager configs; private final CooldownService cooldown = new CooldownService(); private GlobalChatService service;
     @Inject public GlobalChatPlugin(ProxyServer proxy, Logger logger, @DataDirectory Path dataDirectory){ this.proxy=proxy; this.logger=logger; this.configs=new ConfigManager(dataDirectory); }

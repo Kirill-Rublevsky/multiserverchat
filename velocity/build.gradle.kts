@@ -7,7 +7,9 @@ dependencies {
     implementation(project(":common"))
     compileOnly("com.velocitypowered:velocity-api:4.3.0")
     annotationProcessor("com.velocitypowered:velocity-api:4.3.0")
+    testImplementation("com.velocitypowered:velocity-api:4.3.0")
     implementation("org.spongepowered:configurate-yaml:4.2.0")
+    testImplementation("net.kyori:adventure-text-serializer-plain:4.25.0")
 }
 tasks.shadowJar {
     archiveBaseName.set("ovenquill-globalchat-velocity")

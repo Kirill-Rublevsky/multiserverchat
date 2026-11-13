@@ -8,8 +8,8 @@ Velocity официально предупреждает: отмена подп�
 
 ## Установка
 
-1. Положите `ovenquill-globalchat-velocity-1.0.1.jar` в `plugins/` Velocity.
-2. Положите `ovenquill-globalchat-backend-1.0.1.jar` в `plugins/` **каждого** Purpur-сервера.
+1. Положите `ovenquill-globalchat-velocity-1.0.2.jar` в `plugins/` Velocity.
+2. Положите `ovenquill-globalchat-backend-1.0.2.jar` в `plugins/` **каждого** Purpur-сервера.
 3. Один раз запустите прокси и backend-серверы, затем остановите их.
 4. Сгенерируйте длинную случайную строку (не менее 16 символов) и укажите одинаковое значение:
    - Velocity: `plugins/ovenquill-globalchat/config.yml` → `backend.shared-secret`;
@@ -62,3 +62,4 @@ Velocity официально предупреждает: отмена подп�
 ## История исправлений
 
 - **1.0.1:** глобальные сообщения обрабатываются даже если ChatViramble ранее отменил `AsyncChatEvent`; добавлены debug-логи отправки и получения transport-пакетов.
+- **1.0.2:** исправлена подстановка документированных плейсхолдеров `{prefix}`, `{player}`, `{server}`, `{message}` в формате глобального чата.
