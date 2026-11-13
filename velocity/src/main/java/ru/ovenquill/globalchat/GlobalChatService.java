@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import java.util.Objects;
 
 final class GlobalChatService {
-    private final ProxyServer proxy; private final ConfigManager configs; private final ChatFormatter formatter; private final CooldownService cooldown; private final Logger logger;
+    private final ProxyServer proxy; private final ConfigManager configs; private final ChatFormatter formatter; private final CooldownService cooldown; private final Logger logger; private final TabNameResolver tabNames = new TabNameResolver();
     GlobalChatService(ProxyServer proxy, ConfigManager configs, ChatFormatter formatter, CooldownService cooldown, Logger logger) {
         this.proxy=proxy; this.configs=configs; this.formatter=formatter; this.cooldown=cooldown; this.logger=logger;
     }
@@ -22,7 +22,7 @@ final class GlobalChatService {
         CooldownService.Decision decision = cooldown.check(player.getUniqueId(), message, System.currentTimeMillis(), c, player.hasPermission("ovenquill.globalchat.bypasscooldown"));
         if (!decision.allowed()) { reply(player, decision.reason(), "seconds", String.valueOf(decision.seconds())); return; }
         String server = player.getCurrentServer().map(s -> s.getServerInfo().getName()).orElse("unknown");
-        var component = formatter.chat(c, player.getUsername(), server, message);
+        var component = formatter.chat(c, tabNames.coloredUsername(player), server, message);
         for (Player recipient : proxy.getAllPlayers()) {
             if (!c.includeSender() && recipient.getUniqueId().equals(player.getUniqueId())) continue;
             try { recipient.sendMessage(component); } catch (RuntimeException e) { logger.warn("Unable to deliver global chat to {}", recipient.getUsername(), e); }

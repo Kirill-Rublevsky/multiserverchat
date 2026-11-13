@@ -16,6 +16,7 @@ import java.util.UUID;
 public final class GlobalChatBackendPlugin extends JavaPlugin implements Listener {
     private static final String CHANNEL="ovenquill:globalchat";
     private final LocalChatFormatter localFormatter = new LocalChatFormatter();
+    private final TabNameResolver tabNames = new TabNameResolver();
     private volatile BackendSettings settings;
 
     @Override public void onEnable(){
@@ -65,7 +66,7 @@ public final class GlobalChatBackendPlugin extends JavaPlugin implements Listene
             }
             return !current.includeConsole();
         });
-        Component rendered = localFormatter.format(current, sender.getName(), sender.getWorld().getName(), raw);
+        Component rendered = localFormatter.format(current, tabNames.coloredUsername(sender), sender.getWorld().getName(), raw);
         event.renderer(ChatRenderer.viewerUnaware((source, sourceDisplayName, message) -> rendered));
     }
 

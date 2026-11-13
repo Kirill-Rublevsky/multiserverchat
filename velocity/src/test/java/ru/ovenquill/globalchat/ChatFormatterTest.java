@@ -9,7 +9,7 @@ class ChatFormatterTest {
         GlobalChatConfig config = new GlobalChatConfig(true, "!", "[G]",
                 "{prefix} {player} » {message}", true, true, 256, 3,
                 true, 10, "secret-long-enough", 30, true, "", false);
-        var component = new ChatFormatter().chat(config, "Player", "lobby", "<red>Привет</red>");
+        var component = new ChatFormatter().chat(config, net.kyori.adventure.text.Component.text("Player"), "lobby", "<red>Привет</red>");
         assertEquals("[G] Player » <red>Привет</red>", PlainTextComponentSerializer.plainText().serialize(component));
     }
 }
