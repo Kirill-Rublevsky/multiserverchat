@@ -20,6 +20,7 @@ final class BackendMessageListener {
         if (!(event.getSource() instanceof ServerConnection source)) { logger.warn("Rejected global chat packet from non-server source"); return; }
         try {
             SignedPayload payload = SignedPayload.decode(event.getData()); GlobalChatConfig c = plugin.configs().config(); long now = System.currentTimeMillis();
+            if (c.debug()) logger.info("Received global chat packet from {} for {}", source.getServerInfo().getName(), payload.playerId());
             if (!payload.verify(c.sharedSecret(), now, c.packetMaxAgeSeconds()*1000L)) { logger.warn("Rejected invalid global chat signature from {}", source.getServerInfo().getName()); return; }
             if (nonces.putIfAbsent(payload.nonce(), now) != null) { logger.warn("Rejected replayed global chat packet"); return; }
             nonces.entrySet().removeIf(e -> now-e.getValue() > c.packetMaxAgeSeconds()*2000L);

@@ -8,8 +8,8 @@ Velocity официально предупреждает: отмена подп�
 
 ## Установка
 
-1. Положите `ovenquill-globalchat-velocity-1.0.0.jar` в `plugins/` Velocity.
-2. Положите `ovenquill-globalchat-backend-1.0.0.jar` в `plugins/` **каждого** Purpur-сервера.
+1. Положите `ovenquill-globalchat-velocity-1.0.1.jar` в `plugins/` Velocity.
+2. Положите `ovenquill-globalchat-backend-1.0.1.jar` в `plugins/` **каждого** Purpur-сервера.
 3. Один раз запустите прокси и backend-серверы, затем остановите их.
 4. Сгенерируйте длинную случайную строку (не менее 16 символов) и укажите одинаковое значение:
    - Velocity: `plugins/ovenquill-globalchat/config.yml` → `backend.shared-secret`;
@@ -58,3 +58,7 @@ Velocity официально предупреждает: отмена подп�
 - Backend JAR обязателен на каждом Purpur-сервере: это следствие signed-chat протокола, а не дополнительная функция.
 - Статус backend в команде показывает число зарегистрированных серверов Velocity; активная проверка heartbeat не используется, чтобы не создавать лишний трафик. Ошибочная/отсутствующая установка выявляется диагностикой на конкретном backend.
 - Версия Paper API в сборке задаёт минимальную ABI-цель; Purpur целевой версии Minecraft должен предоставлять совместимый Paper API.
+
+## История исправлений
+
+- **1.0.1:** глобальные сообщения обрабатываются даже если ChatViramble ранее отменил `AsyncChatEvent`; добавлены debug-логи отправки и получения transport-пакетов.
