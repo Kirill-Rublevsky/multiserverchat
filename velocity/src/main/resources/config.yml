@@ -1,0 +1,22 @@
+plugin:
+  language: ru
+  debug: false
+global-chat:
+  enabled: true
+  trigger: "!"
+  display-prefix: "[G]"
+  format: "<#A8E6CF>{prefix} <#C8A2FF>{player} <#315C4B>» <#F5F5F5>{message}"
+  include-sender: true
+  console-log: true
+limits:
+  max-message-length: 256
+  cooldown-seconds: 3
+  duplicate-protection:
+    enabled: true
+    interval-seconds: 10
+backend:
+  shared-secret: "CHANGE-ME-TO-A-LONG-RANDOM-SECRET"
+  packet-max-age-seconds: 30
+logging:
+  enabled: true
+  log-format: "[GLOBAL] {player}: {message}"

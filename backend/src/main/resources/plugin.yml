@@ -1,0 +1,6 @@
+name: OvenquillGlobalChatBackend
+version: '${version}'
+main: ru.ovenquill.globalchat.backend.GlobalChatBackendPlugin
+api-version: '1.21'
+authors: [OVENQUILL]
+description: Signed-chat-safe backend bridge for OVENQUILL GlobalChat

@@ -1,0 +1,2 @@
+trigger: "!"
+shared-secret: "CHANGE-ME-TO-THE-SAME-LONG-RANDOM-SECRET-AS-VELOCITY"
