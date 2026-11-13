@@ -4,3 +4,11 @@ main: ru.ovenquill.globalchat.backend.GlobalChatBackendPlugin
 api-version: '1.21'
 authors: [OVENQUILL]
 description: Signed-chat-safe backend bridge for OVENQUILL GlobalChat
+commands:
+  oqchat:
+    description: Управление backend-модулем OVENQUILL Chat
+    usage: /oqchat reload|status
+permissions:
+  ovenquill.globalchat.backend.admin:
+    description: Перезагрузка и просмотр статуса backend-чата
+    default: op

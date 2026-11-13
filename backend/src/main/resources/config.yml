@@ -1,3 +1,10 @@
 trigger: "!"
 shared-secret: "CHANGE-ME-TO-THE-SAME-LONG-RANDOM-SECRET-AS-VELOCITY"
 debug: false
+
+local-chat:
+  enabled: true
+  radius: 100.0
+  display-prefix: "[L]"
+  format: "<#A8E6CF>{prefix} <#C8A2FF>{player} <#315C4B>» <#F5F5F5>{message}"
+  include-console: true
