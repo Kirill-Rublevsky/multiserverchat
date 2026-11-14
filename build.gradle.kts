@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = "ru.ovenquill"
-    version = "1.3.2"
+    version = "1.3.3"
     repositories {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
