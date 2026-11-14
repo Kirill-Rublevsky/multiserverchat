@@ -6,7 +6,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 final class LocalChatFormatter {
     private final MiniMessage mini = MiniMessage.miniMessage();
-    Component format(BackendSettings settings, Component player, String world, String message) {
+    Component format(BackendSettings settings, Component player, String world, Component message) {
         String template = settings.localFormat()
                 .replace("{prefix}", "<prefix>")
                 .replace("{player}", "<player>")
@@ -16,6 +16,6 @@ final class LocalChatFormatter {
                 Placeholder.unparsed("prefix", settings.localPrefix()),
                 Placeholder.component("player", player),
                 Placeholder.unparsed("world", world),
-                Placeholder.unparsed("message", message));
+                Placeholder.component("message", message));
     }
 }

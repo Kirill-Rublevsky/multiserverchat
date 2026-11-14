@@ -1,7 +1,7 @@
 package ru.ovenquill.globalchat.backend;
 
 import io.papermc.paper.chat.ChatRenderer;
-import io.papermc.paper.event.player.AsyncChatEvent;
+import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,14 +30,15 @@ public final class GlobalChatBackendPlugin extends JavaPlugin implements Listene
         getLogger().info("OVENQUILL Chat enabled: global bridge=" + settings.bridgeReady() + ", local chat=" + settings.localEnabled() + ", radius=" + settings.localRadius());
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=false) public void onChat(AsyncChatEvent event){
+    @SuppressWarnings("deprecation")
+    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true) public void onChat(ChatEvent event){
         BackendSettings current = settings;
         String raw=event.signedMessage().message();
         if(raw.startsWith(current.trigger())) { handleGlobal(event, current, raw); return; }
-        if(current.localEnabled()) handleLocal(event, current, raw);
+        if(current.localEnabled()) handleLocal(event, current);
     }
 
-    private void handleGlobal(AsyncChatEvent event, BackendSettings current, String raw) {
+    private void handleGlobal(ChatEvent event, BackendSettings current, String raw) {
         event.setCancelled(true); Player player=event.getPlayer();
         if(!current.bridgeReady()){
             player.sendMessage(Component.text("✦ OVENQUILL | Глобальный чат не настроен на этом сервере. Сообщи администрации."));
@@ -45,23 +46,20 @@ public final class GlobalChatBackendPlugin extends JavaPlugin implements Listene
         }
         try {
             byte[] packet=SignedPayload.create(player.getUniqueId(),raw,current.secret(),System.currentTimeMillis(),UUID.randomUUID()).encode();
-            getServer().getScheduler().runTask(this,()-> {
-                if(player.isOnline()) {
-                    player.sendPluginMessage(this,CHANNEL,packet);
-                    if (current.debug()) getLogger().info("Forwarded global chat packet for " + player.getName());
-                }
-            });
+            if(player.isOnline()) {
+                player.sendPluginMessage(this,CHANNEL,packet);
+                if (current.debug()) getLogger().info("Forwarded global chat packet for " + player.getName());
+            }
         } catch(Exception e){
             getLogger().log(java.util.logging.Level.SEVERE,"Unable to forward global chat",e);
             player.sendMessage(Component.text("✦ OVENQUILL | Ошибка отправки глобального сообщения."));
         }
     }
 
-    private void handleLocal(AsyncChatEvent event, BackendSettings current, String raw) {
+    private void handleLocal(ChatEvent event, BackendSettings current) {
         Player sender = event.getPlayer();
         Location senderLocation = sender.getLocation();
         double radiusSquared = current.localRadius() * current.localRadius();
-        event.setCancelled(false);
         event.viewers().removeIf(audience -> audience instanceof Player || !current.includeConsole());
         for (Player recipient : getServer().getOnlinePlayers()) {
             if (recipient.getWorld().equals(sender.getWorld())
@@ -70,7 +68,7 @@ public final class GlobalChatBackendPlugin extends JavaPlugin implements Listene
             }
         }
         event.viewers().add(sender); // Sender always sees their own message, including radius=0.
-        Component rendered = localFormatter.format(current, tabNames.coloredUsername(sender), sender.getWorld().getName(), raw);
+        Component rendered = localFormatter.format(current, tabNames.coloredUsername(sender), sender.getWorld().getName(), event.message());
         event.renderer(ChatRenderer.viewerUnaware((source, sourceDisplayName, message) -> rendered));
     }
 
