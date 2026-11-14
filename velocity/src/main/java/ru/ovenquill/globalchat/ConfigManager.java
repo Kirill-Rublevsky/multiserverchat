@@ -22,7 +22,7 @@ final class ConfigManager {
         config = nextConfig; messages = Map.copyOf(nextMessages);
     }
     GlobalChatConfig config() { return config; }
-    String message(String key) { return messages.getOrDefault(key, "<red>Missing message: " + key); }
+    String message(String key) { return messages.getOrDefault(key, defaultMessage(key)); }
     void persistEnabled(boolean enabled) throws IOException {
         Path path = directory.resolve("config.yml"); YamlConfigurationLoader loader = YamlConfigurationLoader.builder().path(path).build();
         ConfigurationNode root = loader.load(); root.node("global-chat", "enabled").set(enabled); loader.save(root); load();
@@ -32,5 +32,17 @@ final class ConfigManager {
         try (var in = getClass().getClassLoader().getResourceAsStream(name)) {
             if (in == null) throw new IOException("Missing resource " + name); Files.copy(in, target);
         }
+    }
+    private String defaultMessage(String key) {
+        return switch (key) {
+            case "private-usage" -> "<#A8E6CF>✦ OVENQUILL <gray>| <yellow>Использование: /msg <игрок> <сообщение>";
+            case "private-player-only" -> "<red>Эта команда доступна только игрокам.";
+            case "private-not-found" -> "<#A8E6CF>✦ OVENQUILL <gray>| <red>Игрок {player} не найден в сети.";
+            case "private-self" -> "<#A8E6CF>✦ OVENQUILL <gray>| <red>Нельзя написать самому себе.";
+            case "private-invalid" -> "<#A8E6CF>✦ OVENQUILL <gray>| <red>Сообщение содержит недопустимые символы.";
+            case "private-incoming" -> "<#A8E6CF>[ЛС] <sender> <#315C4B>→ <#F5F5F5>Вы: <message>";
+            case "private-outgoing" -> "<#A8E6CF>[ЛС] <#F5F5F5>Вы <#315C4B>→ <recipient><#F5F5F5>: <message>";
+            default -> "<red>Missing message: " + key;
+        };
     }
 }

@@ -66,6 +66,7 @@ public final class GlobalChatBackendPlugin extends JavaPlugin implements Listene
             }
             return !current.includeConsole();
         });
+        event.viewers().add(sender);
         Component rendered = localFormatter.format(current, tabNames.coloredUsername(sender), sender.getWorld().getName(), raw);
         event.renderer(ChatRenderer.viewerUnaware((source, sourceDisplayName, message) -> rendered));
     }

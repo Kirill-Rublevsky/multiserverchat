@@ -8,8 +8,8 @@ Velocity официально предупреждает: отмена подп�
 
 ## Установка
 
-1. Положите `ovenquill-globalchat-velocity-1.2.0.jar` в `plugins/` Velocity.
-2. Положите `ovenquill-globalchat-backend-1.2.0.jar` в `plugins/` **каждого** Purpur-сервера.
+1. Положите `ovenquill-globalchat-velocity-1.3.0.jar` в `plugins/` Velocity.
+2. Положите `ovenquill-globalchat-backend-1.3.0.jar` в `plugins/` **каждого** Purpur-сервера.
 3. Один раз запустите прокси и backend-серверы, затем остановите их.
 4. Сгенерируйте длинную случайную строку (не менее 16 символов) и укажите одинаковое значение:
    - Velocity: `plugins/ovenquill-globalchat/config.yml` → `backend.shared-secret`;
@@ -39,6 +39,7 @@ local-chat:
 - `/globalchat reload` — `ovenquill.globalchat.reload`;
 - `/globalchat status` — `ovenquill.globalchat.admin`;
 - `/globalchat toggle` — `ovenquill.globalchat.admin`, состояние сохраняется в YAML;
+- `/msg <игрок> <сообщение>` и `/tell <игрок> <сообщение>` — личное сообщение игроку на любом backend-сервере, permission не требуется;
 - `ovenquill.globalchat.bypasscooldown` — обход задержки (защита от повторов сохраняется).
 
 Обычным игрокам permission для глобального чата не нужен.
@@ -80,3 +81,4 @@ local-chat:
 - **1.0.2:** исправлена подстановка документированных плейсхолдеров `{prefix}`, `{player}`, `{server}`, `{message}` в формате глобального чата.
 - **1.1.0:** добавлен полностью самостоятельный локальный чат с радиусом, ограничением по миру, собственным форматом и backend-командой перезагрузки.
 - **1.2.0:** цвет ника в локальном и глобальном чате берётся из оформления ника игрока в TAB; префиксы и суффиксы TAB в чат не копируются.
+- **1.3.0:** отправитель гарантированно видит собственное локальное сообщение; добавлены межсерверные личные сообщения `/msg` и `/tell`.
