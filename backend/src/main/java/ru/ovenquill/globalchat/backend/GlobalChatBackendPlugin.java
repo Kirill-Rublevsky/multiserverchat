@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -58,15 +59,17 @@ public final class GlobalChatBackendPlugin extends JavaPlugin implements Listene
 
     private void handleLocal(AsyncChatEvent event, BackendSettings current, String raw) {
         Player sender = event.getPlayer();
+        Location senderLocation = sender.getLocation();
         double radiusSquared = current.localRadius() * current.localRadius();
         event.setCancelled(false);
-        event.viewers().removeIf(audience -> {
-            if (audience instanceof Player recipient) {
-                return !recipient.getWorld().equals(sender.getWorld()) || recipient.getLocation().distanceSquared(sender.getLocation()) > radiusSquared;
+        event.viewers().removeIf(audience -> audience instanceof Player || !current.includeConsole());
+        for (Player recipient : getServer().getOnlinePlayers()) {
+            if (recipient.getWorld().equals(sender.getWorld())
+                    && recipient.getLocation().distanceSquared(senderLocation) <= radiusSquared) {
+                event.viewers().add(recipient);
             }
-            return !current.includeConsole();
-        });
-        event.viewers().add(sender);
+        }
+        event.viewers().add(sender); // Sender always sees their own message, including radius=0.
         Component rendered = localFormatter.format(current, tabNames.coloredUsername(sender), sender.getWorld().getName(), raw);
         event.renderer(ChatRenderer.viewerUnaware((source, sourceDisplayName, message) -> rendered));
     }
